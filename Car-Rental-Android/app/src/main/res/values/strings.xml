@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Application Strings -->
+    <string name="app_name">Fair Submission</string>
+    <!-- <string name="app_name">Car Rental</string> -->
+    <string name="app_credits">Submitted by Alvin Yan</string>
+    <string name="app_prompt">Tap to Proceed</string>
+
+    <!-- API Keys -->
+    <string name="google_api_key">AIzaSyAltTgaCx_vxcntwIeiAYQd1eY5FLx3_S8</string>
+    <string name="amadeus_api_key">BH0YcvY52j0ee98eMLf9YMoHUjzzqZTi</string>
+
+    <!-- Menu Tabs for Selection -->
+    <string name="menu_tab_0">Search</string>
+    <string name="menu_tab_1">Map</string>
+    <string name="menu_tab_2">Options</string>
+
+    <!-- Credits -->
+    <string name="credits_000">Fair Submission</string>
+    <string name="credits_001">Developer: Alvin Yan</string>
+    <string name="credits_002">Google Map powered by &#169; Google Services.</string>
+    <string name="credits_003">Car rentals powered by &#169; Amadeus Services.</string>
+    <string name="credits_004">All Rights Reserved.</string>
+
+</resources>
