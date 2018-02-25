@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ACRISS Car Classification Code
+        Four letter code system that follows: CATEGORY, TYPE, TRANSMISSION/DRIVE, FUEL/AIR COND.
+        Ex. IDAD =
+            Intermediate, 4/5 Doors, Automatic Transmission, Diesel Powered w/ Air-Conditioning -->
+
+    <!-- Category Listing -->
+
+</resources>

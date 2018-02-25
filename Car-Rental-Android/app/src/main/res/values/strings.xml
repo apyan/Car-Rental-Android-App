@@ -18,8 +18,8 @@
     <!-- Credits -->
     <string name="credits_000">Fair Submission</string>
     <string name="credits_001">Developer: Alvin Yan</string>
-    <string name="credits_002">Google Map powered by &#169; Google Services.</string>
-    <string name="credits_003">Car rentals powered by &#169; Amadeus Services.</string>
+    <string name="credits_002">Google Maps powered by &#169; Google Services.</string>
+    <string name="credits_003">Car Rentals powered by &#169; Amadeus Services.</string>
     <string name="credits_004">All Rights Reserved.</string>
 
 </resources>
