@@ -10,11 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.personaldev.car_rental.carrental.AppFunctions.AppGraphics;
+import com.personaldev.car_rental.carrental.AppFunctions.AppJSONStorage;
 
 public class ScreenTitle extends AppCompatActivity {
 
     // Variables of the activity
     public AppGraphics appGraphics;
+    public AppJSONStorage appJSONStorage;
     public Animation anim = new AlphaAnimation(0.0f, 1.0f);
 
     public TextView text_00;
@@ -27,6 +29,7 @@ public class ScreenTitle extends AppCompatActivity {
 
         // Initiates the classes needed
         appGraphics = new AppGraphics(this);
+        appJSONStorage = new AppJSONStorage(this, getString(R.string.user_file));
 
         // Coordinate with the UI elements
         text_00 = (TextView) findViewById(R.id.prompt_text);
@@ -40,6 +43,11 @@ public class ScreenTitle extends AppCompatActivity {
         anim.setRepeatCount(Animation.INFINITE);
         text_00.startAnimation(anim);
 
+        // Creates the user data file, if it doesn't exist
+        if(!appJSONStorage.fileExists()) {
+            appJSONStorage.initializeFile();
+        }
+        appJSONStorage.dataRead();
     }
 
     // Proceeds to the Menu Tab Screen activity

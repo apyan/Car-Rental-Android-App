@@ -6,6 +6,11 @@
     <string name="app_credits">Submitted by Alvin Yan</string>
     <string name="app_prompt">Tap to Proceed</string>
 
+    <!-- JSON User Storage Variables -->
+    <string name="user_file">user-data-cr.json</string>
+    <string name="user_json_00">radiusSearch</string>
+    <string name="user_json_01">currencyPrice</string>
+
     <!-- API Keys -->
     <string name="google_api_key">AIzaSyAltTgaCx_vxcntwIeiAYQd1eY5FLx3_S8</string>
     <string name="amadeus_api_key">BH0YcvY52j0ee98eMLf9YMoHUjzzqZTi</string>
