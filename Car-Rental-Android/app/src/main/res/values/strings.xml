@@ -15,6 +15,22 @@
     <string name="menu_tab_1">Map</string>
     <string name="menu_tab_2">Options</string>
 
+    <!-- Options Tab -->
+    <string name="options_tab_0">Location</string>
+    <string name="options_tab_0_info">This allows for location detection to\nhelp find nearby eateries near your\nlocation.</string>
+    <string name="options_tab_0_button">Check</string>
+
+    <string name="options_tab_1">Radius Search</string>
+    <string name="options_tab_1_info">This allows for location detection to\nhelp find nearby eateries near your\nlocation.</string>
+    <string name="options_tab_1_warn">* Maximum (km): 999</string>
+
+    <string name="options_tab_2">Currency Price</string>
+    <string name="options_tab_2_info">This allows for location detection to\nhelp find nearby eateries near your\nlocation.</string>
+    <string-array name="options_tab_2_options">
+        <item>USD</item>
+        <item>EUR</item>
+    </string-array>
+
     <!-- Credits -->
     <string name="credits_000">Fair Submission</string>
     <string name="credits_001">Developer: Alvin Yan</string>

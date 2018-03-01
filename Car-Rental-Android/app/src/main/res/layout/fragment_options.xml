@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadeScrollbars="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- GPS Location preference -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    android:id="@+id/title_00"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center|left"
+                    android:layout_marginLeft="15dp"
+                    android:textSize="27sp"
+                    android:text="@string/options_tab_0"/>
+
+                <Button
+                    android:id="@+id/button_00"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:text="@string/options_tab_0_button"
+                    android:layout_marginRight="20dp"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+            <!-- GPS Location description -->
+            <TextView
+                android:id="@+id/description_00"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:textSize="15sp"
+                android:text="@string/options_tab_0_info"/>
+
+            <!-- Credits banner -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/creditText_00"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/credits_000"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:id="@+id/creditText_01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/credits_001"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:id="@+id/creditText_02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/credits_002"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:id="@+id/creditText_03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/credits_003"
+                    android:textSize="15sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
