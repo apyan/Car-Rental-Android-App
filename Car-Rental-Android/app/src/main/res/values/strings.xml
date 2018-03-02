@@ -10,6 +10,7 @@
     <string name="user_file">user-data-cr.json</string>
     <string name="user_json_00">radiusSearch</string>
     <string name="user_json_01">currencyPrice</string>
+    <string name="user_json_02">lastSearchResult</string>
 
     <!-- API Keys -->
     <string name="google_api_key">AIzaSyAltTgaCx_vxcntwIeiAYQd1eY5FLx3_S8</string>
@@ -17,8 +18,19 @@
 
     <!-- Menu Tabs for Selection -->
     <string name="menu_tab_0">Search</string>
-    <string name="menu_tab_1">Map</string>
+    <string name="menu_tab_1">Location</string>
     <string name="menu_tab_2">Options</string>
+
+    <!-- Search Tab -->
+    <string name="search_tab_00">Please enter the address.</string>
+    <string name="search_tab_01">City</string>
+    <string name="search_tab_02">State</string>
+    <string name="search_tab_03">ZIP Code</string>
+    <string name="search_tab_04">Pick-Up:</string>
+    <string name="search_tab_05">Drop-Off:</string>
+    <string name="search_tab_06">Search</string>
+    <string name="search_tab_07">Locate Nearby</string>
+    <string name="search_date_place">--/--/----</string>
 
     <!-- Options Tab -->
     <string name="options_tab_0">Location</string>

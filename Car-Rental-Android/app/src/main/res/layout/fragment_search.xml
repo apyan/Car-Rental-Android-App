@@ -1,6 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+    <!-- Search Form Panel -->
+    <LinearLayout
+        android:id="@+id/linearSearch"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark">
+
+        <EditText
+            android:id="@+id/editAddress"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:inputType="text"
+            android:textSize="20sp"
+            android:paddingLeft="10dp"
+            android:hint="@string/search_tab_00"
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/textColorWhite"
+            android:textColorHint="@color/textColorWhite"
+            android:layout_height="45dp" />
+
+        <!-- Address Panels -->
+        <LinearLayout
+            android:id="@+id/addressPanels"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="3dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/editCity"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:inputType="text"
+                android:layout_weight="1"
+                android:hint="@string/search_tab_01"
+                android:layout_width="0dp"
+                android:textSize="20sp"
+                android:paddingLeft="10dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/textColorWhite"
+                android:textColorHint="@color/textColorWhite"
+                android:layout_height="45dp"/>
+
+            <Spinner
+                android:id="@+id/spinnerState"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="45dp"
+                android:textSize="20sp"
+                android:background="@color/colorPrimary"
+                android:paddingLeft="10dp"
+                android:entries="@array/us_states_abbv"
+                android:prompt="@string/search_tab_02" />
+
+            <EditText
+                android:id="@+id/editZip"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:inputType="number"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:paddingLeft="10dp"
+                android:hint="@string/search_tab_03"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/textColorWhite"
+                android:textColorHint="@color/textColorWhite"
+                android:layout_width="0dp"
+                android:layout_height="45dp"/>
+
+        </LinearLayout>
+
+        <!-- Time Button Panels -->
+        <LinearLayout
+            android:id="@+id/timeButtons"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="3dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/pickUpButton"
+                android:text="@string/search_tab_04"
+                android:layout_width="0dp"
+                android:layout_height="47dp"
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:paddingLeft="25dp"
+                android:gravity="left|center"/>
+
+            <Button
+                android:id="@+id/dropOffButton"
+                android:text="@string/search_tab_05"
+                android:layout_width="0dp"
+                android:layout_height="47dp"
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="25dp"
+                android:gravity="left|center"/>
+
+        </LinearLayout>
+
+        <!-- Search Button Panels -->
+        <LinearLayout
+            android:id="@+id/linearButtons"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="5dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/searchButton"
+                android:text="@string/search_tab_06"
+                android:layout_width="0dp"
+                android:layout_height="47dp"
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:gravity="center"/>
+
+            <Button
+                android:id="@+id/locationButton"
+                android:text="@string/search_tab_07"
+                android:layout_width="0dp"
+                android:layout_height="47dp"
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- For First-Time Viewing -->
+
+    <!-- Connection Error -->
+
+    <!-- Loading Results -->
+
+    <!-- No Results Found -->
+
+    <!-- List of found contents -->
+    <ListView
+        android:id="@+id/listView_00"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical">
+
+    </ListView>
+
+</LinearLayout>
