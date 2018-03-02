@@ -6,4 +6,7 @@
 
     <!-- Added Colors -->
     <color name="textColorWhite">#FFFFFF</color>
+    <color name="textColorDkGreen">#358245</color>
+    <color name="textColorDkBlue">#285396</color>
+    <color name="textColorDkGray">#3d3d3d</color>
 </resources>

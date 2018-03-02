@@ -28,7 +28,8 @@ public class AppJSONStorage {
     // File Data Variables
     public int radiusSearch = 50;
     public int currencyPrice = 0;
-    public String lastSearchResult = "";
+    public String lastSearchLatitude = "";
+    public String lastSearchLongitude = "";
 
     // Constructor
     // Ex. "user-data.json"
@@ -65,7 +66,8 @@ public class AppJSONStorage {
             JSONObject jsonObject = new JSONObject(jsonString);
             radiusSearch = jsonObject.getInt(context.getString(R.string.user_json_00));
             currencyPrice = jsonObject.getInt(context.getString(R.string.user_json_01));
-            lastSearchResult = jsonObject.getString(context.getString(R.string.user_json_02));
+            lastSearchLatitude = jsonObject.getString(context.getString(R.string.user_json_02));
+            lastSearchLongitude = jsonObject.getString(context.getString(R.string.user_json_03));
 
         } catch (final JSONException e) {
             e.getMessage();
@@ -104,8 +106,11 @@ public class AppJSONStorage {
         // For the currency price preference
         writer = writer + ",\r\n\"" + context.getString(R.string.user_json_01) + "\" : " + currencyPrice;
 
-        // For the last result searched
-        writer = writer + ",\r\n\"" + context.getString(R.string.user_json_02) + "\" : \"" + lastSearchResult + "\"";
+        // For the last latitude searched
+        writer = writer + ",\r\n\"" + context.getString(R.string.user_json_02) + "\" : \"" + lastSearchLatitude + "\"";
+
+        // For the last longitude searched
+        writer = writer + ",\r\n\"" + context.getString(R.string.user_json_03) + "\" : \"" + lastSearchLongitude + "\"";
 
         // End the JSON file construction
         writer = writer + "}";

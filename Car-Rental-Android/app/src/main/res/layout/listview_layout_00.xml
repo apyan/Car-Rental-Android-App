@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:gravity="top|left"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/listview_layout_00"
+    tools:ignore="RtlHardcoded">
+
+    <TableRow
+        android:layout_width="60dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        tools:ignore="RtlHardcoded">
+
+        <TextView
+            android:id="@+id/text_000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/row_00"
+            android:textStyle="bold"
+            android:textColor="@color/textColorDkGreen"
+            android:textSize="20sp" />
+
+    </TableRow>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical"
+        tools:ignore="RtlHardcoded">
+
+        <TextView
+            android:id="@+id/text_001"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="@string/row_01"
+            android:textColor="@color/textColorDkBlue"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
+
+        <TextView
+            android:id="@+id/text_002"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:text="@string/row_03"
+            android:textColor="@color/textColorDkGray"
+            android:textSize="18sp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:layout_column="1" />
+
+        <TextView
+            android:id="@+id/text_003"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:text="@string/row_04"
+            android:textColor="@color/textColorDkGray"
+            android:textSize="18sp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:layout_column="1" />
+
+    </LinearLayout>
+
+</LinearLayout>

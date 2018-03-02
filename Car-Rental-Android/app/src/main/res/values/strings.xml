@@ -10,7 +10,8 @@
     <string name="user_file">user-data-cr.json</string>
     <string name="user_json_00">radiusSearch</string>
     <string name="user_json_01">currencyPrice</string>
-    <string name="user_json_02">lastSearchResult</string>
+    <string name="user_json_02">lastSearchLatitude</string>
+    <string name="user_json_03">lastSearchLongitude</string>
 
     <!-- API Keys -->
     <string name="google_api_key">AIzaSyAltTgaCx_vxcntwIeiAYQd1eY5FLx3_S8</string>
@@ -25,12 +26,31 @@
     <string name="search_tab_00">Please enter the address.</string>
     <string name="search_tab_01">City</string>
     <string name="search_tab_02">State</string>
-    <string name="search_tab_03">ZIP Code</string>
+    <string name="search_tab_03">ZIP</string>
     <string name="search_tab_04">Pick-Up:</string>
     <string name="search_tab_05">Drop-Off:</string>
     <string name="search_tab_06">Search</string>
     <string name="search_tab_07">Locate Nearby</string>
     <string name="search_date_place">--/--/----</string>
+
+    <string name="notice_00">Welcome!</string>
+    <string name="notice_00a">Please input an address to search\nfor nearby car rental shops!</string>
+    <string name="notice_01">Connection not found!</string>
+    <string name="notice_01a">Please try again.</string>
+    <string name="notice_02">Searching for rental shops...</string>
+    <string name="notice_02a">Please be patient.</string>
+    <string name="notice_03">No rental shops found...</string>
+    <string name="notice_03a">Please try again.</string>
+
+    <string name="message_00">Location services not detected.\nPlease enable the location services to use this feature.</string>
+    <string name="message_01">Address not found.\nPlease input the appropriate address.</string>
+    <string name="message_02">Connection not found.\nPlease try again.</string>
+
+    <string name="row_00">00</string>
+    <string name="row_01">Name (IN)</string>
+    <string name="row_02">(IN)</string>
+    <string name="row_03">Address 1</string>
+    <string name="row_04">Address 2</string>
 
     <!-- Options Tab -->
     <string name="options_tab_0">Location</string>
@@ -39,7 +59,7 @@
 
     <string name="options_tab_1">Radius Search</string>
     <string name="options_tab_1_info">This allows for location detection to\nhelp find nearby eateries near your\nlocation.</string>
-    <string name="options_tab_1_warn">* Maximum (km): 999</string>
+    <string name="options_tab_1_warn">* Maximum (km): 99</string>
 
     <string name="options_tab_2">Currency Price</string>
     <string name="options_tab_2_info">This allows for location detection to\nhelp find nearby eateries near your\nlocation.</string>

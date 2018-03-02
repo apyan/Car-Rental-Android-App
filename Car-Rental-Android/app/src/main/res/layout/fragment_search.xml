@@ -19,14 +19,14 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:inputType="text"
-            android:textSize="20sp"
+            android:textSize="17sp"
             android:paddingLeft="10dp"
             android:hint="@string/search_tab_00"
             android:layout_width="match_parent"
             android:background="@color/colorPrimary"
             android:textColor="@color/textColorWhite"
             android:textColorHint="@color/textColorWhite"
-            android:layout_height="45dp" />
+            android:layout_height="35dp" />
 
         <!-- Address Panels -->
         <LinearLayout
@@ -46,19 +46,19 @@
                 android:layout_weight="1"
                 android:hint="@string/search_tab_01"
                 android:layout_width="0dp"
-                android:textSize="20sp"
+                android:textSize="17sp"
                 android:paddingLeft="10dp"
                 android:background="@color/colorPrimary"
                 android:textColor="@color/textColorWhite"
                 android:textColorHint="@color/textColorWhite"
-                android:layout_height="45dp"/>
+                android:layout_height="35dp"/>
 
             <Spinner
                 android:id="@+id/spinnerState"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="45dp"
-                android:textSize="20sp"
+                android:layout_height="35dp"
+                android:textSize="17sp"
                 android:background="@color/colorPrimary"
                 android:paddingLeft="10dp"
                 android:entries="@array/us_states_abbv"
@@ -70,14 +70,14 @@
                 android:layout_marginRight="10dp"
                 android:inputType="number"
                 android:layout_weight="1"
-                android:textSize="20sp"
+                android:textSize="17sp"
                 android:paddingLeft="10dp"
                 android:hint="@string/search_tab_03"
                 android:background="@color/colorPrimary"
                 android:textColor="@color/textColorWhite"
                 android:textColorHint="@color/textColorWhite"
                 android:layout_width="0dp"
-                android:layout_height="45dp"/>
+                android:layout_height="35dp"/>
 
         </LinearLayout>
 
@@ -95,24 +95,24 @@
                 android:id="@+id/pickUpButton"
                 android:text="@string/search_tab_04"
                 android:layout_width="0dp"
-                android:layout_height="47dp"
-                android:textSize="15sp"
+                android:layout_height="45dp"
+                android:textSize="14sp"
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="5dp"
-                android:paddingLeft="25dp"
+                android:paddingLeft="15dp"
                 android:gravity="left|center"/>
 
             <Button
                 android:id="@+id/dropOffButton"
                 android:text="@string/search_tab_05"
                 android:layout_width="0dp"
-                android:layout_height="47dp"
-                android:textSize="15sp"
+                android:layout_height="45dp"
+                android:textSize="14sp"
                 android:layout_weight="1"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="10dp"
-                android:paddingLeft="25dp"
+                android:paddingLeft="15dp"
                 android:gravity="left|center"/>
 
         </LinearLayout>
@@ -124,15 +124,15 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="3dp"
             android:gravity="center">
 
             <Button
                 android:id="@+id/searchButton"
                 android:text="@string/search_tab_06"
                 android:layout_width="0dp"
-                android:layout_height="47dp"
-                android:textSize="15sp"
+                android:layout_height="45dp"
+                android:textSize="14sp"
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="5dp"
@@ -142,8 +142,8 @@
                 android:id="@+id/locationButton"
                 android:text="@string/search_tab_07"
                 android:layout_width="0dp"
-                android:layout_height="47dp"
-                android:textSize="15sp"
+                android:layout_height="45dp"
+                android:textSize="14sp"
                 android:layout_weight="1"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="10dp"
@@ -154,12 +154,110 @@
     </LinearLayout>
 
     <!-- For First-Time Viewing -->
+    <LinearLayout
+        android:id="@+id/greeting_linear"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/greeting_text_00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="@string/notice_00"/>
+
+        <TextView
+            android:id="@+id/greeting_text_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp"
+            android:text="@string/notice_00a"/>
+
+    </LinearLayout>
 
     <!-- Connection Error -->
+    <LinearLayout
+        android:id="@+id/connection_linear"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/connection_text_00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="@string/notice_01"/>
+
+        <TextView
+            android:id="@+id/connection_text_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp"
+            android:text="@string/notice_01a"/>
+
+    </LinearLayout>
 
     <!-- Loading Results -->
+    <LinearLayout
+        android:id="@+id/loading_linear"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ProgressBar
+            android:id="@+id/loading_progress"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+        <TextView
+            android:id="@+id/loading_text_00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="25sp"
+            android:text="@string/notice_02"/>
+
+        <TextView
+            android:id="@+id/loading_text_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp"
+            android:text="@string/notice_02a"/>
+
+    </LinearLayout>
 
     <!-- No Results Found -->
+    <LinearLayout
+        android:id="@+id/results_linear"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/results_text_00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="@string/notice_03"/>
+
+        <TextView
+            android:id="@+id/results_text_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp"
+            android:text="@string/notice_03a"/>
+
+    </LinearLayout>
 
     <!-- List of found contents -->
     <ListView
