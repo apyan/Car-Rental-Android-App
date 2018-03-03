@@ -13,15 +13,16 @@ import java.util.ArrayList;
 public class RentalShopObject implements Parcelable {
 
     // Variables of the object
-    public String companyCode;
-    public String companyName;
-    public String branchID;
-    public double latitude;
-    public double longitude;
-    public String addressLine1;
-    public String addressCity;
-    public String addressRegion;
-    public String addressCountry;
+    public String companyCode = "";
+    public String companyName = "";
+    public String branchID = "";
+    public double latitude = 0.00;
+    public double longitude = 0.00;
+    public String addressLine1 = "";
+    public String addressCity = "";
+    public String addressRegion = "";
+    public String addressPostalCode = "";
+    public String addressCountry = "";
     public ArrayList<CarObject> carsListing;
 
     // Constructor
@@ -45,6 +46,7 @@ public class RentalShopObject implements Parcelable {
         dest.writeString(addressLine1);
         dest.writeString(addressCity);
         dest.writeString(addressRegion);
+        dest.writeString(addressPostalCode);
         dest.writeString(addressCountry);
     }
 
@@ -58,6 +60,7 @@ public class RentalShopObject implements Parcelable {
         this.addressLine1 = in.readString();
         this.addressCity = in.readString();
         this.addressRegion = in.readString();
+        this.addressPostalCode = in.readString();
         this.addressCountry = in.readString();
     }
 

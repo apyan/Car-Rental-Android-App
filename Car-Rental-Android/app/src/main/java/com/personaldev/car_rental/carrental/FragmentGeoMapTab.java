@@ -72,6 +72,7 @@ public class FragmentGeoMapTab extends Fragment implements OnMapReadyCallback {
         // Set up needed classes
         context = getActivity();
         appConnect = new AppConnect(getActivity());
+        //appConnect.handleSSLHandshake();
         requestQueue = Volley.newRequestQueue(context);
         rentalListing = new ArrayList<>();
 
@@ -103,7 +104,7 @@ public class FragmentGeoMapTab extends Fragment implements OnMapReadyCallback {
         googleMap.addMarker(new
                 MarkerOptions().position(SanFrancisco).title("San Francisco"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(SanFrancisco));
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(SanFrancisco,10));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(SanFrancisco,12));
 
         // Checks for connection
         if(appConnect.connectionAvailable()) {
@@ -157,16 +158,20 @@ public class FragmentGeoMapTab extends Fragment implements OnMapReadyCallback {
                                     JSONObject dataObject_02 = rentalEntry.getJSONObject("address");
                                     rentalShopObject.addressLine1 = dataObject_02.getString("line1");
                                     rentalShopObject.addressCity = dataObject_02.getString("city");
-                                    rentalShopObject.addressRegion = dataObject_02.getString("region");
+                                    // Checks for Region existence
+                                    if(dataObject_02.has("region")) {
+                                        rentalShopObject.addressRegion = dataObject_02.getString("region");
+                                    }
+                                    // Checks for Postal Code existence
+                                    if(dataObject_02.has("postal_code")) {
+                                        rentalShopObject.addressPostalCode = dataObject_02.getString("postal_code");
+                                    }
+
                                     rentalShopObject.addressCountry = dataObject_02.getString("country");
 
                                     Log.d("TESTER-000", "VIEWING " + rentalShopObject.addressCountry);
 
-                                    // Adding Markers
-                                    googleMap.addMarker(new MarkerOptions().position(new LatLng(rentalShopObject.latitude,
-                                            rentalShopObject.longitude))
-                                            .title(rentalShopObject.companyName).icon(BitmapDescriptorFactory
-                                                    .defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                                    // -------
 
                                     // Loop through the cars array
                                     JSONArray dataObjectArray_1 = rentalEntry.getJSONArray("cars");
@@ -176,7 +181,7 @@ public class FragmentGeoMapTab extends Fragment implements OnMapReadyCallback {
                                         CarObject carObject = new CarObject();
 
                                         // Get current child JSON object (vehicle_info)
-                                        JSONObject rentalEntry_1 = dataObjectArray.getJSONObject(index_1);
+                                        JSONObject rentalEntry_1 = dataObjectArray_1.getJSONObject(index_1);
                                         JSONObject dataObject_03 = rentalEntry_1.getJSONObject("vehicle_info");
                                         carObject.acrissCode = dataObject_03.getString("acriss_code");
                                         carObject.transmission = dataObject_03.getString("transmission");
@@ -185,13 +190,15 @@ public class FragmentGeoMapTab extends Fragment implements OnMapReadyCallback {
                                         carObject.vehicleCategory = dataObject_03.getString("category");
                                         carObject.vehicleType = dataObject_03.getString("type");
 
+                                        Log.d("TESTER-001", "VIEWING " + carObject.acrissCode);
+
                                         // Get current child JSON object (estimated_total)
                                         JSONObject dataObject_04 = rentalEntry_1.getJSONObject("estimated_total");
                                         carObject.estimatedTotal = dataObject_04.getString("amount");
                                         carObject.estimatedCurrency = dataObject_04.getString("currency");
 
                                         // Loop through the rates array
-                                        JSONArray dataObjectArray_2 = rentalEntry.getJSONArray("rates");
+                                        JSONArray dataObjectArray_2 = rentalEntry_1.getJSONArray("rates");
                                         for(int index_2 = 0; index_2 < dataObjectArray_2.length(); index_2++) {
 
                                             // Create a new PricingObject
@@ -212,6 +219,14 @@ public class FragmentGeoMapTab extends Fragment implements OnMapReadyCallback {
                                         rentalShopObject.carsListing.add(carObject);
                                     }
 
+                                    // ---
+
+                                    // Adding Markers
+                                    googleMap.addMarker(new MarkerOptions().position(new LatLng(rentalShopObject.latitude,
+                                            rentalShopObject.longitude))
+                                            .title(rentalShopObject.companyName).icon(BitmapDescriptorFactory
+                                                    .defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
                                     // Add the new topic into the Rental Listing Array
                                     rentalListing.add(rentalShopObject);
                                 }
@@ -229,7 +244,7 @@ public class FragmentGeoMapTab extends Fragment implements OnMapReadyCallback {
 
                             // Appropriate the screen output (No Connection)
                             Toast.makeText(context, getString(R.string.message_02), Toast.LENGTH_SHORT).show();
-                            Log.d("TESTER-000", "VIEWING " + jsonURL);
+                            Log.d("TESTER-000", "VIEWING " + error.toString());
                         }
                     }
             );
