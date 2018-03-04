@@ -71,7 +71,7 @@ public class AdapterRentals extends BaseAdapter {
         rowAttributes.text_03 = (TextView) rowView.findViewById(R.id.text_003);
 
         // Display the cars available at the shop
-        rowAttributes.text_00.setText(foundedRentals.get(position).carsListing.size());
+        rowAttributes.text_00.setText(foundedRentals.get(position).carsListing.size() + "");
 
         // Display the company name and code
         String placer_holder = foundedRentals.get(position).companyName + " (" +

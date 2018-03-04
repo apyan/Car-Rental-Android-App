@@ -205,7 +205,7 @@ public class FragmentGeoMapTab extends Fragment implements OnMapReadyCallback {
                                             PricingObject pricingObject = new PricingObject();
 
                                             // Get current child JSON object (price)
-                                            JSONObject rentalEntry_2 = dataObjectArray.getJSONObject(index_2);
+                                            JSONObject rentalEntry_2 = dataObjectArray_2.getJSONObject(index_2);
                                             pricingObject.rateType = rentalEntry_2.getString("type");
                                             JSONObject dataObject_05 = rentalEntry_2.getJSONObject("price");
                                             pricingObject.priceAmount = dataObject_05.getString("amount");
@@ -222,9 +222,11 @@ public class FragmentGeoMapTab extends Fragment implements OnMapReadyCallback {
                                     // ---
 
                                     // Adding Markers
+                                    String mapMarkerTitle = rentalShopObject.companyName +
+                                            " (" + rentalShopObject.companyCode + ")";
                                     googleMap.addMarker(new MarkerOptions().position(new LatLng(rentalShopObject.latitude,
                                             rentalShopObject.longitude))
-                                            .title(rentalShopObject.companyName).icon(BitmapDescriptorFactory
+                                            .title(mapMarkerTitle).icon(BitmapDescriptorFactory
                                                     .defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
                                     // Add the new topic into the Rental Listing Array

@@ -1,18 +1,23 @@
 package com.personaldev.car_rental.carrental;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -63,9 +68,10 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
     public static String url_6 = "&currency=";
     public String jsonURL;
     public ArrayList<RentalShopObject> rentalListing;
-    public String datePickUp = "";
-    public String dateDropOff = "";
-    public SimpleDateFormat dateFormat_00, dateFormat_01;
+    public String [] datePickUp = {"", "", ""};
+    public String [] dateDropOff = {"", "", ""};
+    public SimpleDateFormat dateFormat_00, dateFormat_01, dateFormat_02;
+    public DatePickerDialog datePickerDialog;
 
     public RequestQueue requestQueue;
     public JsonObjectRequest jsonObjectRequest;
@@ -92,10 +98,13 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
         requestQueue = Volley.newRequestQueue(context);
 
         // Set up date formats, initialize it as today
-        dateFormat_00 = new SimpleDateFormat("MM/dd/yyyy");
-        dateFormat_01 = new SimpleDateFormat("yyyy-MM-dd");
-        datePickUp = dateFormat_01.format(new Date());
-        dateDropOff = dateFormat_01.format(new Date());
+        // "MM/dd/yyyy", "yyyy-MM-dd"
+        dateFormat_00 = new SimpleDateFormat("MM");
+        dateFormat_01 = new SimpleDateFormat("dd");
+        dateFormat_02 = new SimpleDateFormat("yyyy");
+        datePickUp[0] = dateDropOff[0] = dateFormat_00.format(new Date());
+        datePickUp[1] = dateDropOff[1] = dateFormat_01.format(new Date());
+        datePickUp[2] = dateDropOff[2] = dateFormat_02.format(new Date());
 
         // Assign UI Elements
         listView_00 = (ListView) v.findViewById(R.id.listView_00);
@@ -118,8 +127,10 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
 
         // Set-up the Initial View
         // Set up the time labels
-        button_00.setText(getString(R.string.search_tab_04) + " " + dateFormat_00.format(new Date()));
-        button_01.setText(getString(R.string.search_tab_05) + " " + dateFormat_00.format(new Date()));
+        button_00.setText(getString(R.string.search_tab_04) + " " + datePickUp[0] + "/" +
+                datePickUp[1] + "/" + datePickUp[2]);
+        button_01.setText(getString(R.string.search_tab_05) + " " + dateDropOff[0] + "/" +
+                dateDropOff[1] + "/" + dateDropOff[2]);
 
         // For first-time view, than the last searched latitude and (assuming longitude) is empty
         if(appJSONStorage.lastSearchLatitude.equals("")) {
@@ -144,7 +155,8 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                 // Create the URL
                 jsonURL = url_0 + getString(R.string.amadeus_api_key) + url_1 + appJSONStorage.lastSearchLatitude +
                         url_2 + appJSONStorage.lastSearchLongitude + url_3 + appJSONStorage.radiusSearch + url_4 +
-                        datePickUp + url_5 + dateDropOff + url_6 + "USD";
+                        datePickUp[2] + "-" + datePickUp[0] + "-" + datePickUp[1] + url_5 +
+                        dateDropOff[2] + "-" + dateDropOff[0] + "-" + dateDropOff[1] + url_6 + "USD";
 
                 // Initialize JsonObjectRequest for Volley JSON retrieval
                 jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -176,7 +188,6 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                                         JSONObject dataObject_00 = rentalEntry.getJSONObject("provider");
                                         rentalShopObject.companyCode = dataObject_00.getString("company_code");
                                         rentalShopObject.companyName = dataObject_00.getString("company_name");
-
                                         rentalShopObject.branchID = rentalEntry.getString("branch_id");
 
                                         // Get current child JSON object (address)
@@ -188,7 +199,14 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                                         JSONObject dataObject_02 = rentalEntry.getJSONObject("address");
                                         rentalShopObject.addressLine1 = dataObject_02.getString("line1");
                                         rentalShopObject.addressCity = dataObject_02.getString("city");
-                                        rentalShopObject.addressRegion = dataObject_02.getString("region");
+                                        // Checks for Region existence
+                                        if(dataObject_02.has("region")) {
+                                            rentalShopObject.addressRegion = dataObject_02.getString("region");
+                                        }
+                                        // Checks for Postal Code existence
+                                        if(dataObject_02.has("postal_code")) {
+                                            rentalShopObject.addressPostalCode = dataObject_02.getString("postal_code");
+                                        }
                                         rentalShopObject.addressCountry = dataObject_02.getString("country");
 
                                         // Loop through the cars array
@@ -199,7 +217,7 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                                             CarObject carObject = new CarObject();
 
                                             // Get current child JSON object (vehicle_info)
-                                            JSONObject rentalEntry_1 = dataObjectArray.getJSONObject(index_1);
+                                            JSONObject rentalEntry_1 = dataObjectArray_1.getJSONObject(index_1);
                                             JSONObject dataObject_03 = rentalEntry_1.getJSONObject("vehicle_info");
                                             carObject.acrissCode = dataObject_03.getString("acriss_code");
                                             carObject.transmission = dataObject_03.getString("transmission");
@@ -214,14 +232,14 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                                             carObject.estimatedCurrency = dataObject_04.getString("currency");
 
                                             // Loop through the rates array
-                                            JSONArray dataObjectArray_2 = rentalEntry.getJSONArray("rates");
+                                            JSONArray dataObjectArray_2 = rentalEntry_1.getJSONArray("rates");
                                             for(int index_2 = 0; index_2 < dataObjectArray_2.length(); index_2++) {
 
                                                 // Create a new PricingObject
                                                 PricingObject pricingObject = new PricingObject();
 
                                                 // Get current child JSON object (price)
-                                                JSONObject rentalEntry_2 = dataObjectArray.getJSONObject(index_2);
+                                                JSONObject rentalEntry_2 = dataObjectArray_2.getJSONObject(index_2);
                                                 pricingObject.rateType = rentalEntry_2.getString("type");
                                                 JSONObject dataObject_05 = rentalEntry_2.getJSONObject("price");
                                                 pricingObject.priceAmount = dataObject_05.getString("amount");
@@ -230,11 +248,9 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                                                 // Add the new topic into the Price Listing Array
                                                 carObject.priceListing.add(pricingObject);
                                             }
-
                                             // Add the new topic into the Car Listing Array
                                             rentalShopObject.carsListing.add(carObject);
                                         }
-
                                         // Add the new topic into the Rental Listing Array
                                         rentalListing.add(rentalShopObject);
                                     }
@@ -282,6 +298,34 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
             // Opens the calendar for pick-up
             case R.id.pickUpButton:
                 //
+
+                // calender class's instance and get current date , month and year from calender
+                final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR); // current year
+                int mMonth = c.get(Calendar.MONTH); // current month
+                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+                // date picker dialog
+                datePickerDialog = new DatePickerDialog(getContext(),
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                // set day of month , month and year value in the edit text
+                                datePickUp[0] = (monthOfYear + 1) + "";
+                                datePickUp[1] = dayOfMonth + "";
+                                datePickUp[2] = year + "";
+                                button_00.setText(getString(R.string.search_tab_04) + " " + datePickUp[0] + "/" +
+                                        datePickUp[1] + "/" + datePickUp[2]);
+
+                            }
+                        }, mYear, mMonth, mDay);
+
+                // Set minimum date so user can't choose a date from the past (1 second)
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() -1000);
+                datePickerDialog.show();
+
+                //
                 break;
             // Opens the calendar for drop-off
             case R.id.dropOffButton:
@@ -296,6 +340,9 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                 // Checks for connection
                 if(appConnect.connectionAvailable()) {
 
+                    // Clear list history for a fresh list
+                    rentalListing = new ArrayList<>();
+
                     // Appropriate the screen output (Searching)
                     linearLayout_01.setVisibility(View.GONE);
                     linearLayout_02.setVisibility(View.VISIBLE);
@@ -305,7 +352,8 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                     // Create the URL
                     jsonURL = url_0 + getString(R.string.amadeus_api_key) + url_1 + "37.773972" +
                             url_2 + "-122.431297" + url_3 + appJSONStorage.radiusSearch + url_4 +
-                            datePickUp + url_5 + dateDropOff + url_6 + "USD";
+                            datePickUp[2] + "-" + datePickUp[0] + "-" + datePickUp[1] + url_5 +
+                            dateDropOff[2] + "-" + dateDropOff[0] + "-" + dateDropOff[1] + url_6 + "USD";
 
                     // Initialize JsonObjectRequest for Volley JSON retrieval
                     jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -337,7 +385,6 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                                             JSONObject dataObject_00 = rentalEntry.getJSONObject("provider");
                                             rentalShopObject.companyCode = dataObject_00.getString("company_code");
                                             rentalShopObject.companyName = dataObject_00.getString("company_name");
-
                                             rentalShopObject.branchID = rentalEntry.getString("branch_id");
 
                                             // Get current child JSON object (address)
@@ -349,7 +396,14 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                                             JSONObject dataObject_02 = rentalEntry.getJSONObject("address");
                                             rentalShopObject.addressLine1 = dataObject_02.getString("line1");
                                             rentalShopObject.addressCity = dataObject_02.getString("city");
-                                            rentalShopObject.addressRegion = dataObject_02.getString("region");
+                                            // Checks for Region existence
+                                            if(dataObject_02.has("region")) {
+                                                rentalShopObject.addressRegion = dataObject_02.getString("region");
+                                            }
+                                            // Checks for Postal Code existence
+                                            if(dataObject_02.has("postal_code")) {
+                                                rentalShopObject.addressPostalCode = dataObject_02.getString("postal_code");
+                                            }
                                             rentalShopObject.addressCountry = dataObject_02.getString("country");
 
                                             // Loop through the cars array
@@ -360,7 +414,7 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                                                 CarObject carObject = new CarObject();
 
                                                 // Get current child JSON object (vehicle_info)
-                                                JSONObject rentalEntry_1 = dataObjectArray.getJSONObject(index_1);
+                                                JSONObject rentalEntry_1 = dataObjectArray_1.getJSONObject(index_1);
                                                 JSONObject dataObject_03 = rentalEntry_1.getJSONObject("vehicle_info");
                                                 carObject.acrissCode = dataObject_03.getString("acriss_code");
                                                 carObject.transmission = dataObject_03.getString("transmission");
@@ -375,14 +429,14 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                                                 carObject.estimatedCurrency = dataObject_04.getString("currency");
 
                                                 // Loop through the rates array
-                                                JSONArray dataObjectArray_2 = rentalEntry.getJSONArray("rates");
+                                                JSONArray dataObjectArray_2 = rentalEntry_1.getJSONArray("rates");
                                                 for(int index_2 = 0; index_2 < dataObjectArray_2.length(); index_2++) {
 
                                                     // Create a new PricingObject
                                                     PricingObject pricingObject = new PricingObject();
 
                                                     // Get current child JSON object (price)
-                                                    JSONObject rentalEntry_2 = dataObjectArray.getJSONObject(index_2);
+                                                    JSONObject rentalEntry_2 = dataObjectArray_2.getJSONObject(index_2);
                                                     pricingObject.rateType = rentalEntry_2.getString("type");
                                                     JSONObject dataObject_05 = rentalEntry_2.getJSONObject("price");
                                                     pricingObject.priceAmount = dataObject_05.getString("amount");
@@ -391,11 +445,9 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                                                     // Add the new topic into the Price Listing Array
                                                     carObject.priceListing.add(pricingObject);
                                                 }
-
                                                 // Add the new topic into the Car Listing Array
                                                 rentalShopObject.carsListing.add(carObject);
                                             }
-
                                             // Add the new topic into the Rental Listing Array
                                             rentalListing.add(rentalShopObject);
                                         }
