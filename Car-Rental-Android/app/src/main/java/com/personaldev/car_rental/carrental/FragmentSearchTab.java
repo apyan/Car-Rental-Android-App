@@ -68,8 +68,8 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
     public static String url_6 = "&currency=";
     public String jsonURL;
     public ArrayList<RentalShopObject> rentalListing;
-    public String [] datePickUp = {"", "", ""};
-    public String [] dateDropOff = {"", "", ""};
+    public int [] datePickUp = {0, 0, 0};
+    public int [] dateDropOff = {0, 0, 0};
     public SimpleDateFormat dateFormat_00, dateFormat_01, dateFormat_02;
     public DatePickerDialog datePickerDialog;
 
@@ -102,9 +102,9 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
         dateFormat_00 = new SimpleDateFormat("MM");
         dateFormat_01 = new SimpleDateFormat("dd");
         dateFormat_02 = new SimpleDateFormat("yyyy");
-        datePickUp[0] = dateDropOff[0] = dateFormat_00.format(new Date());
-        datePickUp[1] = dateDropOff[1] = dateFormat_01.format(new Date());
-        datePickUp[2] = dateDropOff[2] = dateFormat_02.format(new Date());
+        datePickUp[0] = dateDropOff[0] = Integer.parseInt(dateFormat_00.format(new Date()));
+        datePickUp[1] = dateDropOff[1] = Integer.parseInt(dateFormat_01.format(new Date()));
+        datePickUp[2] = dateDropOff[2] = Integer.parseInt(dateFormat_02.format(new Date()));
 
         // Assign UI Elements
         listView_00 = (ListView) v.findViewById(R.id.listView_00);
@@ -297,32 +297,33 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
         switch (v.getId()) {
             // Opens the calendar for pick-up
             case R.id.pickUpButton:
-                //
 
-                // calender class's instance and get current date , month and year from calender
-                final Calendar c = Calendar.getInstance();
-                int mYear = c.get(Calendar.YEAR); // current year
-                int mMonth = c.get(Calendar.MONTH); // current month
-                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-                // date picker dialog
+                // Get the Calender class's instance and get current date, month and year from calender
+                final Calendar calendar = Calendar.getInstance();
+                int calendarYear = calendar.get(Calendar.YEAR);
+                int calendarMonth = calendar.get(Calendar.MONTH);
+                int calendarDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+                // Date Picker Dialog
                 datePickerDialog = new DatePickerDialog(getContext(),
                         new DatePickerDialog.OnDateSetListener() {
 
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-                                // set day of month , month and year value in the edit text
-                                datePickUp[0] = (monthOfYear + 1) + "";
-                                datePickUp[1] = dayOfMonth + "";
-                                datePickUp[2] = year + "";
+                                // Set Month/Day/Year values
+                                datePickUp[0] = monthOfYear + 1;
+                                datePickUp[1] = dayOfMonth;
+                                datePickUp[2] = year;
                                 button_00.setText(getString(R.string.search_tab_04) + " " + datePickUp[0] + "/" +
                                         datePickUp[1] + "/" + datePickUp[2]);
 
                             }
-                        }, mYear, mMonth, mDay);
+                        }, calendarYear, calendarMonth, calendarDay);
 
                 // Set minimum date so user can't choose a date from the past (1 second)
-                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() -1000);
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.setTitle(R.string.search_tab_08);
                 datePickerDialog.show();
 
                 //

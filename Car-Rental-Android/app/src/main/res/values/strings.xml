@@ -15,7 +15,7 @@
 
     <!-- API Keys -->
     <string name="google_api_key">AIzaSyAltTgaCx_vxcntwIeiAYQd1eY5FLx3_S8</string>
-    <string name="amadeus_api_key">BH0YcvY52j0ee98eMLf9YMoHUjzzqZTi</string>
+    <string name="amadeus_api_key">HhWOBcl8icJDaNvGPVG9unqPDazOZfYp</string>
 
     <!-- Menu Tabs for Selection -->
     <string name="menu_tab_0">Search</string>
@@ -31,6 +31,8 @@
     <string name="search_tab_05">Drop-Off:</string>
     <string name="search_tab_06">Search</string>
     <string name="search_tab_07">Locate Nearby</string>
+    <string name="search_tab_08">Select Pick-Up</string>
+    <string name="search_tab_09">Select Drop-Off</string>
     <string name="search_date_place">--/--/----</string>
 
     <string name="notice_00">Welcome!</string>
@@ -54,7 +56,7 @@
 
     <!-- Options Tab -->
     <string name="options_tab_0">Location</string>
-    <string name="options_tab_0_info">This allows for location detection to\nhelp find nearby eateries near your\nlocation.</string>
+    <string name="options_tab_0_info">This allows for location detection to\nhelp find nearby car rentals near your\nlocation.</string>
     <string name="options_tab_0_button">Check</string>
 
     <string name="options_tab_1">Radius Search</string>
