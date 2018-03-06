@@ -140,153 +140,16 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
             linearLayout_03.setVisibility(View.GONE);
             listView_00.setVisibility(View.GONE);
         } else {
+
+            // Destroy the Welcome Sign
             linearLayout_00.setVisibility(View.GONE);
 
-            // There is last results found from the file
-            // Checks for connection
-            if(appConnect.connectionAvailable()) {
-
-                // Appropriate the screen output (Searching)
-                linearLayout_01.setVisibility(View.GONE);
-                linearLayout_02.setVisibility(View.VISIBLE);
-                linearLayout_03.setVisibility(View.GONE);
-                listView_00.setVisibility(View.GONE);
-
-                // Create the URL
-                jsonURL = url_0 + getString(R.string.amadeus_api_key) + url_1 + appJSONStorage.lastSearchLatitude +
-                        url_2 + appJSONStorage.lastSearchLongitude + url_3 + appJSONStorage.radiusSearch + url_4 +
-                        datePickUp[2] + "-" + datePickUp[0] + "-" + datePickUp[1] + url_5 +
-                        dateDropOff[2] + "-" + dateDropOff[0] + "-" + dateDropOff[1] + url_6 + "USD";
-
-                // Initialize JsonObjectRequest for Volley JSON retrieval
-                jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                        jsonURL, null,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-
-                                // Appropriate the screen output (Viewing Topics)
-                                linearLayout_01.setVisibility(View.GONE);
-                                linearLayout_02.setVisibility(View.GONE);
-                                linearLayout_03.setVisibility(View.GONE);
-                                listView_00.setVisibility(View.VISIBLE);
-
-                                // Process the JSON file
-                                try {
-
-                                    // Get the JSON attributes
-                                    JSONArray dataObjectArray = response.getJSONArray("results");
-
-                                    // Loop through the children array
-                                    for(int index = 0; index < dataObjectArray.length(); index++) {
-
-                                        // Create a new RentalShopObject
-                                        RentalShopObject rentalShopObject = new RentalShopObject();
-
-                                        // Get current child JSON object (provider)
-                                        JSONObject rentalEntry = dataObjectArray.getJSONObject(index);
-                                        JSONObject dataObject_00 = rentalEntry.getJSONObject("provider");
-                                        rentalShopObject.companyCode = dataObject_00.getString("company_code");
-                                        rentalShopObject.companyName = dataObject_00.getString("company_name");
-                                        rentalShopObject.branchID = rentalEntry.getString("branch_id");
-
-                                        // Get current child JSON object (address)
-                                        JSONObject dataObject_01 = rentalEntry.getJSONObject("location");
-                                        rentalShopObject.latitude = dataObject_01.getDouble("latitude");
-                                        rentalShopObject.longitude = dataObject_01.getDouble("longitude");
-
-                                        // Get current child JSON object (address)
-                                        JSONObject dataObject_02 = rentalEntry.getJSONObject("address");
-                                        rentalShopObject.addressLine1 = dataObject_02.getString("line1");
-                                        rentalShopObject.addressCity = dataObject_02.getString("city");
-                                        // Checks for Region existence
-                                        if(dataObject_02.has("region")) {
-                                            rentalShopObject.addressRegion = dataObject_02.getString("region");
-                                        }
-                                        // Checks for Postal Code existence
-                                        if(dataObject_02.has("postal_code")) {
-                                            rentalShopObject.addressPostalCode = dataObject_02.getString("postal_code");
-                                        }
-                                        rentalShopObject.addressCountry = dataObject_02.getString("country");
-
-                                        // Loop through the cars array
-                                        JSONArray dataObjectArray_1 = rentalEntry.getJSONArray("cars");
-                                        for(int index_1 = 0; index_1 < dataObjectArray_1.length(); index_1++) {
-
-                                            // Create a new CarObject
-                                            CarObject carObject = new CarObject();
-
-                                            // Get current child JSON object (vehicle_info)
-                                            JSONObject rentalEntry_1 = dataObjectArray_1.getJSONObject(index_1);
-                                            JSONObject dataObject_03 = rentalEntry_1.getJSONObject("vehicle_info");
-                                            carObject.acrissCode = dataObject_03.getString("acriss_code");
-                                            carObject.transmission = dataObject_03.getString("transmission");
-                                            carObject.fuel = dataObject_03.getString("fuel");
-                                            carObject.airConditioning = dataObject_03.getBoolean("air_conditioning");
-                                            carObject.vehicleCategory = dataObject_03.getString("category");
-                                            carObject.vehicleType = dataObject_03.getString("type");
-
-                                            // Get current child JSON object (estimated_total)
-                                            JSONObject dataObject_04 = rentalEntry_1.getJSONObject("estimated_total");
-                                            carObject.estimatedTotal = dataObject_04.getString("amount");
-                                            carObject.estimatedCurrency = dataObject_04.getString("currency");
-
-                                            // Loop through the rates array
-                                            JSONArray dataObjectArray_2 = rentalEntry_1.getJSONArray("rates");
-                                            for(int index_2 = 0; index_2 < dataObjectArray_2.length(); index_2++) {
-
-                                                // Create a new PricingObject
-                                                PricingObject pricingObject = new PricingObject();
-
-                                                // Get current child JSON object (price)
-                                                JSONObject rentalEntry_2 = dataObjectArray_2.getJSONObject(index_2);
-                                                pricingObject.rateType = rentalEntry_2.getString("type");
-                                                JSONObject dataObject_05 = rentalEntry_2.getJSONObject("price");
-                                                pricingObject.priceAmount = dataObject_05.getString("amount");
-                                                pricingObject.priceCurrency = dataObject_05.getString("currency");
-
-                                                // Add the new topic into the Price Listing Array
-                                                carObject.priceListing.add(pricingObject);
-                                            }
-                                            // Add the new topic into the Car Listing Array
-                                            rentalShopObject.carsListing.add(carObject);
-                                        }
-                                        // Add the new topic into the Rental Listing Array
-                                        rentalListing.add(rentalShopObject);
-                                    }
-
-                                } catch(JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                                // Populate ListView
-                                listView_00.setAdapter(new AdapterRentals(getActivity(), rentalListing));
-                            }
-                        },
-                        new Response.ErrorListener(){
-                            @Override
-                            public void onErrorResponse(VolleyError error){
-                                // Do something when error occurred
-
-                                // Appropriate the screen output (No Connection)
-                                linearLayout_01.setVisibility(View.VISIBLE);
-                                linearLayout_02.setVisibility(View.GONE);
-                                linearLayout_03.setVisibility(View.GONE);
-                                listView_00.setVisibility(View.GONE);
-                            }
-                        }
-                );
-
-                // Add JsonObjectRequest to the RequestQueue
-                requestQueue.add(jsonObjectRequest);
-
-            } else {
-                // Connection not found
-                linearLayout_01.setVisibility(View.VISIBLE);
-                linearLayout_02.setVisibility(View.GONE);
-                linearLayout_03.setVisibility(View.GONE);
-                listView_00.setVisibility(View.GONE);
-            }
+            // Create the URL
+            jsonURL = url_0 + getString(R.string.amadeus_api_key) + url_1 + appJSONStorage.lastSearchLatitude +
+                    url_2 + appJSONStorage.lastSearchLongitude + url_3 + appJSONStorage.radiusSearch + url_4 +
+                    datePickUp[2] + "-" + datePickUp[0] + "-" + datePickUp[1] + url_5 +
+                    dateDropOff[2] + "-" + dateDropOff[0] + "-" + dateDropOff[1] + url_6 + "USD";
+            volleyJSONSearch();
         }
 
         return v;
@@ -298,7 +161,7 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
             // Opens the calendar for pick-up
             case R.id.pickUpButton:
 
-                // Get the Calender class's instance and get current date, month and year from calender
+                // Get the Calender class instance and get current date
                 final Calendar calendar = Calendar.getInstance();
                 int calendarYear = calendar.get(Calendar.YEAR);
                 int calendarMonth = calendar.get(Calendar.MONTH);
@@ -315,182 +178,233 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                                 datePickUp[0] = monthOfYear + 1;
                                 datePickUp[1] = dayOfMonth;
                                 datePickUp[2] = year;
-                                button_00.setText(getString(R.string.search_tab_04) + " " + datePickUp[0] + "/" +
-                                        datePickUp[1] + "/" + datePickUp[2]);
+                                button_00.setText(getString(R.string.search_tab_04) + " " + datePickUp[0]
+                                        + "/" + datePickUp[1] + "/" + datePickUp[2]);
 
+                                // Ensure that the drop-off date is never before the pick-up date
+                                Calendar compareCal_0 = Calendar.getInstance();
+                                Calendar compareCal_1 = Calendar.getInstance();
+                                compareCal_0.set(datePickUp[2], datePickUp[0], datePickUp[1]);
+                                compareCal_1.set(dateDropOff[2], dateDropOff[0], dateDropOff[1]);
+                                if(compareCal_0.getTimeInMillis() > compareCal_1.getTimeInMillis()) {
+                                    // Set Month/Day/Year values
+                                    dateDropOff[0] = datePickUp[0];
+                                    dateDropOff[1] = datePickUp[1];
+                                    dateDropOff[2] = datePickUp[2];
+                                    button_01.setText(getString(R.string.search_tab_05) + " " + dateDropOff[0]
+                                            + "/" + dateDropOff[1] + "/" + dateDropOff[2]);
+                                }
                             }
-                        }, calendarYear, calendarMonth, calendarDay);
+                        }, datePickUp[2], datePickUp[0] - 1, datePickUp[1]);
 
                 // Set minimum date so user can't choose a date from the past (1 second)
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-                datePickerDialog.setTitle(R.string.search_tab_08);
-                datePickerDialog.show();
+                calendar.set(calendarYear + 1, calendarMonth, calendarDay);
 
-                //
+                // Set maximum date so user can't choose a date over 360 days (Amadeus Limit)
+                datePickerDialog.getDatePicker().setMaxDate(
+                        calendar.getTimeInMillis() - (1000 * 60 * 60 * 24 * 4));
+                datePickerDialog.show();
                 break;
+
             // Opens the calendar for drop-off
             case R.id.dropOffButton:
-                //
+
+                // Get the Calender class's instance and get current date, month and year from calender
+                final Calendar calendar_0 = Calendar.getInstance();
+                final Calendar calendar_1 = Calendar.getInstance();
+                int calendarYear_1 = calendar_1.get(Calendar.YEAR);
+                int calendarMonth_1 = calendar_1.get(Calendar.MONTH);
+                int calendarDay_1 = calendar_1.get(Calendar.DAY_OF_MONTH);
+
+                // Date Picker Dialog
+                datePickerDialog = new DatePickerDialog(getContext(),
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                // Set Month/Day/Year values
+                                dateDropOff[0] = monthOfYear + 1;
+                                dateDropOff[1] = dayOfMonth;
+                                dateDropOff[2] = year;
+                                button_01.setText(getString(R.string.search_tab_05) + " " + dateDropOff[0]
+                                        + "/" + dateDropOff[1] + "/" + dateDropOff[2]);
+                            }
+                        }, dateDropOff[2], dateDropOff[0] - 1, dateDropOff[1]);
+
+                // Set minimum date so user can't choose a date before pick-up
+                calendar_0.set(datePickUp[2], datePickUp[0] - 1, datePickUp[1]);
+                datePickerDialog.getDatePicker().setMinDate(calendar_0.getTimeInMillis() - 1000);
+                calendar_1.set(calendarYear_1 + 1, calendarMonth_1, calendarDay_1);
+
+                // Set maximum date so user can't choose a date over 360 days (Amadeus Limit)
+                datePickerDialog.getDatePicker().setMaxDate(
+                        calendar_1.getTimeInMillis() - (1000 * 60 * 60 * 24 * 4));
+                datePickerDialog.show();
                 break;
 
             // Searches for the rental shops based on address given
             case R.id.searchButton:
-                //
+                // Destroy the Welcome Sign
                 linearLayout_00.setVisibility(View.GONE);
-                // There is last results found from the file
-                // Checks for connection
-                if(appConnect.connectionAvailable()) {
 
-                    // Clear list history for a fresh list
-                    rentalListing = new ArrayList<>();
-
-                    // Appropriate the screen output (Searching)
-                    linearLayout_01.setVisibility(View.GONE);
-                    linearLayout_02.setVisibility(View.VISIBLE);
-                    linearLayout_03.setVisibility(View.GONE);
-                    listView_00.setVisibility(View.GONE);
-
-                    // Create the URL
-                    jsonURL = url_0 + getString(R.string.amadeus_api_key) + url_1 + "37.773972" +
-                            url_2 + "-122.431297" + url_3 + appJSONStorage.radiusSearch + url_4 +
-                            datePickUp[2] + "-" + datePickUp[0] + "-" + datePickUp[1] + url_5 +
-                            dateDropOff[2] + "-" + dateDropOff[0] + "-" + dateDropOff[1] + url_6 + "USD";
-
-                    // Initialize JsonObjectRequest for Volley JSON retrieval
-                    jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                            jsonURL, null,
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-
-                                    // Appropriate the screen output (Viewing Topics)
-                                    linearLayout_01.setVisibility(View.GONE);
-                                    linearLayout_02.setVisibility(View.GONE);
-                                    linearLayout_03.setVisibility(View.GONE);
-                                    listView_00.setVisibility(View.VISIBLE);
-
-                                    // Process the JSON file
-                                    try {
-
-                                        // Get the JSON attributes
-                                        JSONArray dataObjectArray = response.getJSONArray("results");
-
-                                        // Loop through the children array
-                                        for(int index = 0; index < dataObjectArray.length(); index++) {
-
-                                            // Create a new RentalShopObject
-                                            RentalShopObject rentalShopObject = new RentalShopObject();
-
-                                            // Get current child JSON object (provider)
-                                            JSONObject rentalEntry = dataObjectArray.getJSONObject(index);
-                                            JSONObject dataObject_00 = rentalEntry.getJSONObject("provider");
-                                            rentalShopObject.companyCode = dataObject_00.getString("company_code");
-                                            rentalShopObject.companyName = dataObject_00.getString("company_name");
-                                            rentalShopObject.branchID = rentalEntry.getString("branch_id");
-
-                                            // Get current child JSON object (address)
-                                            JSONObject dataObject_01 = rentalEntry.getJSONObject("location");
-                                            rentalShopObject.latitude = dataObject_01.getDouble("latitude");
-                                            rentalShopObject.longitude = dataObject_01.getDouble("longitude");
-
-                                            // Get current child JSON object (address)
-                                            JSONObject dataObject_02 = rentalEntry.getJSONObject("address");
-                                            rentalShopObject.addressLine1 = dataObject_02.getString("line1");
-                                            rentalShopObject.addressCity = dataObject_02.getString("city");
-                                            // Checks for Region existence
-                                            if(dataObject_02.has("region")) {
-                                                rentalShopObject.addressRegion = dataObject_02.getString("region");
-                                            }
-                                            // Checks for Postal Code existence
-                                            if(dataObject_02.has("postal_code")) {
-                                                rentalShopObject.addressPostalCode = dataObject_02.getString("postal_code");
-                                            }
-                                            rentalShopObject.addressCountry = dataObject_02.getString("country");
-
-                                            // Loop through the cars array
-                                            JSONArray dataObjectArray_1 = rentalEntry.getJSONArray("cars");
-                                            for(int index_1 = 0; index_1 < dataObjectArray_1.length(); index_1++) {
-
-                                                // Create a new CarObject
-                                                CarObject carObject = new CarObject();
-
-                                                // Get current child JSON object (vehicle_info)
-                                                JSONObject rentalEntry_1 = dataObjectArray_1.getJSONObject(index_1);
-                                                JSONObject dataObject_03 = rentalEntry_1.getJSONObject("vehicle_info");
-                                                carObject.acrissCode = dataObject_03.getString("acriss_code");
-                                                carObject.transmission = dataObject_03.getString("transmission");
-                                                carObject.fuel = dataObject_03.getString("fuel");
-                                                carObject.airConditioning = dataObject_03.getBoolean("air_conditioning");
-                                                carObject.vehicleCategory = dataObject_03.getString("category");
-                                                carObject.vehicleType = dataObject_03.getString("type");
-
-                                                // Get current child JSON object (estimated_total)
-                                                JSONObject dataObject_04 = rentalEntry_1.getJSONObject("estimated_total");
-                                                carObject.estimatedTotal = dataObject_04.getString("amount");
-                                                carObject.estimatedCurrency = dataObject_04.getString("currency");
-
-                                                // Loop through the rates array
-                                                JSONArray dataObjectArray_2 = rentalEntry_1.getJSONArray("rates");
-                                                for(int index_2 = 0; index_2 < dataObjectArray_2.length(); index_2++) {
-
-                                                    // Create a new PricingObject
-                                                    PricingObject pricingObject = new PricingObject();
-
-                                                    // Get current child JSON object (price)
-                                                    JSONObject rentalEntry_2 = dataObjectArray_2.getJSONObject(index_2);
-                                                    pricingObject.rateType = rentalEntry_2.getString("type");
-                                                    JSONObject dataObject_05 = rentalEntry_2.getJSONObject("price");
-                                                    pricingObject.priceAmount = dataObject_05.getString("amount");
-                                                    pricingObject.priceCurrency = dataObject_05.getString("currency");
-
-                                                    // Add the new topic into the Price Listing Array
-                                                    carObject.priceListing.add(pricingObject);
-                                                }
-                                                // Add the new topic into the Car Listing Array
-                                                rentalShopObject.carsListing.add(carObject);
-                                            }
-                                            // Add the new topic into the Rental Listing Array
-                                            rentalListing.add(rentalShopObject);
-                                        }
-
-                                    } catch(JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    // Populate ListView
-                                    listView_00.setAdapter(new AdapterRentals(getActivity(), rentalListing));
-                                }
-                            },
-                            new Response.ErrorListener(){
-                                @Override
-                                public void onErrorResponse(VolleyError error){
-                                    // Do something when error occurred
-
-                                    // Appropriate the screen output (No Connection)
-                                    linearLayout_01.setVisibility(View.VISIBLE);
-                                    linearLayout_02.setVisibility(View.GONE);
-                                    linearLayout_03.setVisibility(View.GONE);
-                                    listView_00.setVisibility(View.GONE);
-
-                                    Log.d("TESTER-000", "VIEWING " + error.toString());
-                                }
-                            }
-                    );
-
-                    // Add JsonObjectRequest to the RequestQueue
-                    requestQueue.add(jsonObjectRequest);
-
-                } else {
-                    // Connection not found
-                    linearLayout_01.setVisibility(View.VISIBLE);
-                    linearLayout_02.setVisibility(View.GONE);
-                    linearLayout_03.setVisibility(View.GONE);
-                    listView_00.setVisibility(View.GONE);
-                }
-
+                // Create the URL
+                jsonURL = url_0 + getString(R.string.amadeus_api_key) + url_1 + "37.773972" +
+                        url_2 + "-122.431297" + url_3 + appJSONStorage.radiusSearch + url_4 +
+                        datePickUp[2] + "-" + datePickUp[0] + "-" + datePickUp[1] + url_5 +
+                        dateDropOff[2] + "-" + dateDropOff[0] + "-" + dateDropOff[1] + url_6 + "USD";
+                volleyJSONSearch();
                 break;
             default:
                 break;
+        }
+    }
+
+    // Volley Search Function (JSON)
+    public void volleyJSONSearch() {
+        // There is last results found from the file
+        // Checks for connection
+        if(appConnect.connectionAvailable()) {
+
+            // Clear list history for a fresh list
+            rentalListing = new ArrayList<>();
+
+            // Appropriate the screen output (Searching)
+            linearLayout_01.setVisibility(View.GONE);
+            linearLayout_02.setVisibility(View.VISIBLE);
+            linearLayout_03.setVisibility(View.GONE);
+            listView_00.setVisibility(View.GONE);
+
+            Log.d("TESTER-999", "VIEWING " + jsonURL);
+
+            // Initialize JsonObjectRequest for Volley JSON retrieval
+            jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                    jsonURL, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+
+                            // Appropriate the screen output (Viewing Topics)
+                            linearLayout_01.setVisibility(View.GONE);
+                            linearLayout_02.setVisibility(View.GONE);
+                            linearLayout_03.setVisibility(View.GONE);
+                            listView_00.setVisibility(View.VISIBLE);
+
+                            // Process the JSON file
+                            try {
+
+                                // Get the JSON attributes
+                                JSONArray dataObjectArray = response.getJSONArray("results");
+
+                                // Loop through the children array
+                                for(int index = 0; index < dataObjectArray.length(); index++) {
+
+                                    // Create a new RentalShopObject
+                                    RentalShopObject rentalShopObject = new RentalShopObject();
+
+                                    // Get current child JSON object (provider)
+                                    JSONObject rentalEntry = dataObjectArray.getJSONObject(index);
+                                    JSONObject dataObject_00 = rentalEntry.getJSONObject("provider");
+                                    rentalShopObject.companyCode = dataObject_00.getString("company_code");
+                                    rentalShopObject.companyName = dataObject_00.getString("company_name");
+                                    rentalShopObject.branchID = rentalEntry.getString("branch_id");
+
+                                    // Get current child JSON object (address)
+                                    JSONObject dataObject_01 = rentalEntry.getJSONObject("location");
+                                    rentalShopObject.latitude = dataObject_01.getDouble("latitude");
+                                    rentalShopObject.longitude = dataObject_01.getDouble("longitude");
+
+                                    // Get current child JSON object (address)
+                                    JSONObject dataObject_02 = rentalEntry.getJSONObject("address");
+                                    rentalShopObject.addressLine1 = dataObject_02.getString("line1");
+                                    rentalShopObject.addressCity = dataObject_02.getString("city");
+                                    // Checks for Region existence
+                                    if(dataObject_02.has("region")) {
+                                        rentalShopObject.addressRegion = dataObject_02.getString("region");
+                                    }
+                                    // Checks for Postal Code existence
+                                    if(dataObject_02.has("postal_code")) {
+                                        rentalShopObject.addressPostalCode = dataObject_02.getString("postal_code");
+                                    }
+                                    rentalShopObject.addressCountry = dataObject_02.getString("country");
+
+                                    // Loop through the cars array
+                                    JSONArray dataObjectArray_1 = rentalEntry.getJSONArray("cars");
+                                    for(int index_1 = 0; index_1 < dataObjectArray_1.length(); index_1++) {
+
+                                        // Create a new CarObject
+                                        CarObject carObject = new CarObject();
+
+                                        // Get current child JSON object (vehicle_info)
+                                        JSONObject rentalEntry_1 = dataObjectArray_1.getJSONObject(index_1);
+                                        JSONObject dataObject_03 = rentalEntry_1.getJSONObject("vehicle_info");
+                                        carObject.acrissCode = dataObject_03.getString("acriss_code");
+                                        carObject.transmission = dataObject_03.getString("transmission");
+                                        carObject.fuel = dataObject_03.getString("fuel");
+                                        carObject.airConditioning = dataObject_03.getBoolean("air_conditioning");
+                                        carObject.vehicleCategory = dataObject_03.getString("category");
+                                        carObject.vehicleType = dataObject_03.getString("type");
+
+                                        // Get current child JSON object (estimated_total)
+                                        JSONObject dataObject_04 = rentalEntry_1.getJSONObject("estimated_total");
+                                        carObject.estimatedTotal = dataObject_04.getString("amount");
+                                        carObject.estimatedCurrency = dataObject_04.getString("currency");
+
+                                        // Loop through the rates array
+                                        JSONArray dataObjectArray_2 = rentalEntry_1.getJSONArray("rates");
+                                        for(int index_2 = 0; index_2 < dataObjectArray_2.length(); index_2++) {
+
+                                            // Create a new PricingObject
+                                            PricingObject pricingObject = new PricingObject();
+
+                                            // Get current child JSON object (price)
+                                            JSONObject rentalEntry_2 = dataObjectArray_2.getJSONObject(index_2);
+                                            pricingObject.rateType = rentalEntry_2.getString("type");
+                                            JSONObject dataObject_05 = rentalEntry_2.getJSONObject("price");
+                                            pricingObject.priceAmount = dataObject_05.getString("amount");
+                                            pricingObject.priceCurrency = dataObject_05.getString("currency");
+
+                                            // Add the new topic into the Price Listing Array
+                                            carObject.priceListing.add(pricingObject);
+                                        }
+                                        // Add the new topic into the Car Listing Array
+                                        rentalShopObject.carsListing.add(carObject);
+                                    }
+                                    // Add the new topic into the Rental Listing Array
+                                    rentalListing.add(rentalShopObject);
+                                }
+
+                            } catch(JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            // Populate ListView
+                            listView_00.setAdapter(new AdapterRentals(getActivity(), rentalListing));
+                        }
+                    },
+                    new Response.ErrorListener(){
+                        @Override
+                        public void onErrorResponse(VolleyError error){
+
+                            // Appropriate the screen output (No Connection)
+                            linearLayout_01.setVisibility(View.VISIBLE);
+                            linearLayout_02.setVisibility(View.GONE);
+                            linearLayout_03.setVisibility(View.GONE);
+                            listView_00.setVisibility(View.GONE);
+                            Log.d("TESTER-000", "VIEWING " + error.toString());
+                        }
+                    }
+            );
+            // Add JsonObjectRequest to the RequestQueue
+            requestQueue.add(jsonObjectRequest);
+
+        } else {
+            // Connection not found
+            linearLayout_01.setVisibility(View.VISIBLE);
+            linearLayout_02.setVisibility(View.GONE);
+            linearLayout_03.setVisibility(View.GONE);
+            listView_00.setVisibility(View.GONE);
         }
     }
 }
