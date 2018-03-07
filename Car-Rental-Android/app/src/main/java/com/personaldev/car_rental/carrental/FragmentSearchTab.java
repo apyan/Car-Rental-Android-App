@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.icu.util.Calendar;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -43,11 +45,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * The fragment that displays the user searches.
@@ -109,9 +113,9 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
         // Assign UI Elements
         listView_00 = (ListView) v.findViewById(R.id.listView_00);
         editText_00 = (EditText) v.findViewById(R.id.editAddress);
-        editText_01 = (EditText) v.findViewById(R.id.editCity);
-        editText_02 = (EditText) v.findViewById(R.id.editZip);
-        spinner_00 = (Spinner) v.findViewById(R.id.spinnerState);
+        //editText_01 = (EditText) v.findViewById(R.id.editCity);
+        //editText_02 = (EditText) v.findViewById(R.id.editZip);
+        //spinner_00 = (Spinner) v.findViewById(R.id.spinnerState);
         button_00 = (Button) v.findViewById(R.id.pickUpButton);
         button_01 = (Button) v.findViewById(R.id.dropOffButton);
         button_02 = (Button) v.findViewById(R.id.searchButton);
@@ -143,6 +147,11 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
 
             // Destroy the Welcome Sign
             linearLayout_00.setVisibility(View.GONE);
+
+            // Prefill the address textbox if last search found
+            if(!appJSONStorage.lastSearchAddress.equals("")) {
+                editText_00.setText(appJSONStorage.lastSearchAddress);
+            }
 
             // Create the URL
             jsonURL = url_0 + getString(R.string.amadeus_api_key) + url_1 + appJSONStorage.lastSearchLatitude +
@@ -249,15 +258,62 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                 // Destroy the Welcome Sign
                 linearLayout_00.setVisibility(View.GONE);
 
+                // Analyzing Input Address
+                getCoordinatesfromAddress(editText_00.getText().toString());
+
                 // Create the URL
-                jsonURL = url_0 + getString(R.string.amadeus_api_key) + url_1 + "37.773972" +
-                        url_2 + "-122.431297" + url_3 + appJSONStorage.radiusSearch + url_4 +
-                        datePickUp[2] + "-" + datePickUp[0] + "-" + datePickUp[1] + url_5 +
-                        dateDropOff[2] + "-" + dateDropOff[0] + "-" + dateDropOff[1] + url_6 + "USD";
-                volleyJSONSearch();
+                jsonURL = url_0 + getString(R.string.amadeus_api_key) + url_1 +
+                        appJSONStorage.lastSearchLatitude + url_2 + appJSONStorage.lastSearchLongitude
+                        + url_3 + appJSONStorage.radiusSearch + url_4 + datePickUp[2] + "-" + datePickUp[0]
+                        + "-" + datePickUp[1] + url_5 + dateDropOff[2] + "-" + dateDropOff[0] + "-"
+                        + dateDropOff[1] + url_6 + "USD";
+
+                // Checks to see if address was valid
+                if(appJSONStorage.lastSearchLatitude.equals("")) {
+                    Toast.makeText(getActivity(), getString(R.string.message_01), Toast.LENGTH_SHORT).show();
+
+                    // No results were found
+                    linearLayout_01.setVisibility(View.GONE);
+                    linearLayout_02.setVisibility(View.GONE);
+                    linearLayout_03.setVisibility(View.VISIBLE);
+                    listView_00.setVisibility(View.GONE);
+                } else {
+                    volleyJSONSearch();
+                }
                 break;
             default:
                 break;
+        }
+    }
+
+    // Obtain latitude and longitude from address
+    public void getCoordinatesfromAddress(String inputAddress) {
+
+        // Variables of the function
+        Geocoder geocoder = new Geocoder(context);
+        List<Address> addressFound;
+
+        // Checks for connection
+        if(appConnect.connectionAvailable()) {
+            try {
+                // Decipher the coordinates from the address
+                addressFound = geocoder.getFromLocationName(inputAddress, 3);
+                // If no coordinates were found
+                if(addressFound == null) {
+                    linearLayout_01.setVisibility(View.GONE);
+                    linearLayout_02.setVisibility(View.GONE);
+                    linearLayout_03.setVisibility(View.VISIBLE);
+                    listView_00.setVisibility(View.GONE);
+                } else {
+                    // Save for succession
+                    appJSONStorage.lastSearchLatitude = addressFound.get(0).getLatitude() + "";
+                    appJSONStorage.lastSearchLongitude = addressFound.get(0).getLongitude() + "";
+                    appJSONStorage.lastSearchAddress = inputAddress;
+                    appJSONStorage.dataWrite();
+                    appJSONStorage.dataRead();
+                }
+            } catch (IOException e) {
+            }
         }
     }
 
@@ -380,7 +436,15 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                             }
 
                             // Populate ListView
-                            listView_00.setAdapter(new AdapterRentals(getActivity(), rentalListing));
+                            // For empty listing
+                            if(rentalListing.size() == 0) {
+                                linearLayout_01.setVisibility(View.GONE);
+                                linearLayout_02.setVisibility(View.GONE);
+                                linearLayout_03.setVisibility(View.VISIBLE);
+                                listView_00.setVisibility(View.GONE);
+                            } else {
+                                listView_00.setAdapter(new AdapterRentals(getActivity(), rentalListing));
+                            }
                         }
                     },
                     new Response.ErrorListener(){

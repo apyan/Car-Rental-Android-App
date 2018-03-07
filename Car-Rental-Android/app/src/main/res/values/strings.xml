@@ -12,6 +12,7 @@
     <string name="user_json_01">currencyPrice</string>
     <string name="user_json_02">lastSearchLatitude</string>
     <string name="user_json_03">lastSearchLongitude</string>
+    <string name="user_json_04">lastSearchAddress</string>
 
     <!-- API Keys -->
     <string name="google_api_key">AIzaSyAltTgaCx_vxcntwIeiAYQd1eY5FLx3_S8</string>

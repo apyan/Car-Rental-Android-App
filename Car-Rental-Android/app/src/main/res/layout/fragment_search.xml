@@ -26,10 +26,10 @@
             android:background="@color/colorPrimary"
             android:textColor="@color/textColorWhite"
             android:textColorHint="@color/textColorWhite"
-            android:layout_height="30dp" />
+            android:layout_height="35dp" />
 
         <!-- Address Panels -->
-        <LinearLayout
+        <!-- <LinearLayout
             android:id="@+id/addressPanels"
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                 android:layout_width="0dp"
                 android:layout_height="30dp"/>
 
-        </LinearLayout>
+        </LinearLayout> -->
 
         <!-- Time Button Panels -->
         <LinearLayout
