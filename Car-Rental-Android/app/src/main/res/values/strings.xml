@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Application Strings -->
-    <string name="app_name">Fair Submission</string>
+    <string name="app_name">RentalDot</string>
     <!-- <string name="app_name">Car Rental</string> -->
     <string name="app_credits">Submitted by Alvin Yan</string>
     <string name="app_prompt">Tap to Proceed</string>
@@ -65,8 +65,9 @@
     <string name="options_tab_0_button">Check</string>
 
     <string name="options_tab_1">Radius Search</string>
-    <string name="options_tab_1_info">This allows for location detection to\nhelp find nearby eateries near your\nlocation.</string>
-    <string name="options_tab_1_warn">* Maximum (km): 99</string>
+    <string name="options_tab_1_ex">50</string>
+    <string name="options_tab_1_info">This determines the radius distance in\nkilometers to seek for the nearby car\nrental shops.</string>
+    <string name="options_tab_1_warn">* Minimum radius: 5 km\n* Maximum radius: 99 km</string>
 
     <string name="options_tab_2">Currency Price</string>
     <string name="options_tab_2_info">This allows for location detection to\nhelp find nearby eateries near your\nlocation.</string>
@@ -76,7 +77,7 @@
     </string-array>
 
     <!-- Credits -->
-    <string name="credits_000">Fair Submission</string>
+    <string name="credits_000">RentalDot</string>
     <string name="credits_001">Developer: Alvin Yan</string>
     <string name="credits_002">Google Maps powered by &#169; Google Services.</string>
     <string name="credits_003">Car Rentals powered by &#169; Amadeus Services.</string>

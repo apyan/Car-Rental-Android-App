@@ -76,6 +76,8 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
     public int [] dateDropOff = {0, 0, 0};
     public SimpleDateFormat dateFormat_00, dateFormat_01, dateFormat_02;
     public DatePickerDialog datePickerDialog;
+    public boolean geoCode = true;
+    public boolean pauseGate = false;
 
     public RequestQueue requestQueue;
     public JsonObjectRequest jsonObjectRequest;
@@ -165,6 +167,23 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        requestQueue.stop();
+        pauseGate = true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // When onPause took effect
+        if(pauseGate) {
+            requestQueue.start();
+            pauseGate = false;
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             // Opens the calendar for pick-up
@@ -187,8 +206,8 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                                 datePickUp[0] = monthOfYear + 1;
                                 datePickUp[1] = dayOfMonth;
                                 datePickUp[2] = year;
-                                button_00.setText(getString(R.string.search_tab_04) + " " + datePickUp[0]
-                                        + "/" + datePickUp[1] + "/" + datePickUp[2]);
+                                button_00.setText(getString(R.string.search_tab_04) + " " +
+                                        datePickUp[0] + "/" + datePickUp[1] + "/" + datePickUp[2]);
 
                                 // Ensure that the drop-off date is never before the pick-up date
                                 Calendar compareCal_0 = Calendar.getInstance();
@@ -219,7 +238,7 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
             // Opens the calendar for drop-off
             case R.id.dropOffButton:
 
-                // Get the Calender class's instance and get current date, month and year from calender
+                // Get the Calender class's instance and get current date
                 final Calendar calendar_0 = Calendar.getInstance();
                 final Calendar calendar_1 = Calendar.getInstance();
                 int calendarYear_1 = calendar_1.get(Calendar.YEAR);
@@ -269,7 +288,7 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                         + dateDropOff[1] + url_6 + "USD";
 
                 // Checks to see if address was valid
-                if(appJSONStorage.lastSearchLatitude.equals("")) {
+                if(!geoCode) {
                     Toast.makeText(getActivity(), getString(R.string.message_01), Toast.LENGTH_SHORT).show();
 
                     // No results were found
@@ -299,11 +318,12 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                 // Decipher the coordinates from the address
                 addressFound = geocoder.getFromLocationName(inputAddress, 3);
                 // If no coordinates were found
-                if(addressFound == null) {
+                if((addressFound == null) || (addressFound.size() == 0)) {
                     linearLayout_01.setVisibility(View.GONE);
                     linearLayout_02.setVisibility(View.GONE);
                     linearLayout_03.setVisibility(View.VISIBLE);
                     listView_00.setVisibility(View.GONE);
+                    geoCode = false;
                 } else {
                     // Save for succession
                     appJSONStorage.lastSearchLatitude = addressFound.get(0).getLatitude() + "";
@@ -311,6 +331,7 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                     appJSONStorage.lastSearchAddress = inputAddress;
                     appJSONStorage.dataWrite();
                     appJSONStorage.dataRead();
+                    geoCode = true;
                 }
             } catch (IOException e) {
             }

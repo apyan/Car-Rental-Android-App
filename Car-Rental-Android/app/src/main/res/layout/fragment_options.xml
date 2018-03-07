@@ -26,13 +26,14 @@
                     android:layout_height="match_parent"
                     android:gravity="center|left"
                     android:layout_marginLeft="15dp"
-                    android:textSize="27sp"
+                    android:textColor="@color/textColorDkGray"
+                    android:textSize="25sp"
                     android:text="@string/options_tab_0"/>
 
                 <Button
                     android:id="@+id/button_00"
                     android:layout_width="100dp"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:text="@string/options_tab_0_button"
                     android:layout_marginRight="20dp"
                     android:layout_alignParentRight="true"/>
@@ -47,6 +48,53 @@
                 android:layout_marginLeft="30dp"
                 android:textSize="15sp"
                 android:text="@string/options_tab_0_info"/>
+
+            <!-- Radius Search preference -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/title_01"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center|left"
+                    android:layout_marginLeft="15dp"
+                    android:textColor="@color/textColorDkGray"
+                    android:textSize="25sp"
+                    android:text="@string/options_tab_1"/>
+
+                <EditText
+                    android:id="@+id/editText_00"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:hint="@string/options_tab_1_ex"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:layout_marginRight="20dp"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+            <!-- GPS Location description -->
+            <TextView
+                android:id="@+id/description_01"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:textSize="15sp"
+                android:text="@string/options_tab_1_info"/>
+
+            <TextView
+                android:id="@+id/description_02"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:textSize="15sp"
+                android:textColor="@color/textColorDkGray"
+                android:text="@string/options_tab_1_warn"/>
 
             <!-- Credits banner -->
             <LinearLayout

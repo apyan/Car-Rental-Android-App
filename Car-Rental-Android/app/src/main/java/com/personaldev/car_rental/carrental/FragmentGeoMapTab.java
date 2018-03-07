@@ -102,8 +102,16 @@ public class FragmentGeoMapTab extends Fragment implements OnMapReadyCallback, V
             // Searches for the nearby car rentals
             case R.id.searchButton:
                 break;
+
             // Locates the user on Google Maps via Location services
             case R.id.locateButton:
+                // Check to see if location services are available
+                if(!appConnect.locationAvailable()) {
+                    // Warns user that location services is not available.
+                    Toast.makeText(context, getString(R.string.message_00), Toast.LENGTH_SHORT).show();
+                } else {
+
+                }
                 break;
             default:
                 break;
