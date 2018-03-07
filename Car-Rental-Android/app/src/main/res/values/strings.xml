@@ -55,6 +55,10 @@
     <string name="row_03">Address 1</string>
     <string name="row_04">Address 2</string>
 
+    <!-- GeoMap Tab -->
+    <string name="map_tab_0">Search</string>
+    <string name="map_tab_1">Locate</string>
+
     <!-- Options Tab -->
     <string name="options_tab_0">Location</string>
     <string name="options_tab_0_info">This allows for location detection to\nhelp find nearby car rentals near your\nlocation.</string>

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -37,7 +38,7 @@ import java.util.ArrayList;
  * Fragment displaying the map visual from Google Maps
  */
 
-public class FragmentGeoMapTab extends Fragment implements OnMapReadyCallback {
+public class FragmentGeoMapTab extends Fragment implements OnMapReadyCallback, View.OnClickListener {
 
     // Variables used for the fragment
     public AppConnect appConnect;
@@ -50,6 +51,9 @@ public class FragmentGeoMapTab extends Fragment implements OnMapReadyCallback {
     public static String url_4 = "&pick_up=";
     public static String url_5 = "&drop_off=";
     public static String url_6 = "&currency=";
+
+    // UI Elements
+    public Button button_00, button_01;
 
     public RequestQueue requestQueue;
     public JsonObjectRequest jsonObjectRequest;
@@ -81,20 +85,29 @@ public class FragmentGeoMapTab extends Fragment implements OnMapReadyCallback {
                 findFragmentById(R.id.supportMapFragment);
         supportMapFragment.getMapAsync(this);
 
-        /*FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mapFragment.getMapAsync(new OnMapReadyCallback() {
-                    @Override
-                    public void onMapReady(GoogleMap googleMap) {
-                        // Add Contents Here
-                    }
-                });
-            }
-        });*/
+        // Assign UI Elements
+        button_00 = (Button) v.findViewById(R.id.searchButton);
+        button_01 = (Button) v.findViewById(R.id.locateButton);
+
+        // Button onClick Inputs
+        button_00.setOnClickListener(this);
+        button_01.setOnClickListener(this);
 
         return v;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            // Searches for the nearby car rentals
+            case R.id.searchButton:
+                break;
+            // Locates the user on Google Maps via Location services
+            case R.id.locateButton:
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

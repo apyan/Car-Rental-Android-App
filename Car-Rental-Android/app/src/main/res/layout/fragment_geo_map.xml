@@ -12,4 +12,24 @@
         android:layout_gravity="center"
         android:layout_height="match_parent"/>
 
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/map_tab_0" />
+
+    <Button
+        android:id="@+id/locateButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/map_tab_1" />
+
 </RelativeLayout>
