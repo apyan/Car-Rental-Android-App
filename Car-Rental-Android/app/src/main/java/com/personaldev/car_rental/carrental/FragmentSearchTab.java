@@ -176,6 +176,7 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
     @Override
     public void onResume() {
         super.onResume();
+        appJSONStorage.dataRead();
         // When onPause took effect
         if(pauseGate) {
             requestQueue.start();
@@ -378,7 +379,9 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                                 for(int index = 0; index < dataObjectArray.length(); index++) {
 
                                     // Create a new RentalShopObject
-                                    RentalShopObject rentalShopObject = new RentalShopObject();
+                                    RentalShopObject rentalShopObject =
+                                            new RentalShopObject(appJSONStorage.lastSearchLatitude,
+                                                    appJSONStorage.lastSearchLongitude);
 
                                     // Get current child JSON object (provider)
                                     JSONObject rentalEntry = dataObjectArray.getJSONObject(index);
@@ -391,6 +394,7 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                                     JSONObject dataObject_01 = rentalEntry.getJSONObject("location");
                                     rentalShopObject.latitude = dataObject_01.getDouble("latitude");
                                     rentalShopObject.longitude = dataObject_01.getDouble("longitude");
+                                    rentalShopObject.distanceInMiles();
 
                                     // Get current child JSON object (address)
                                     JSONObject dataObject_02 = rentalEntry.getJSONObject("address");
@@ -464,7 +468,10 @@ public class FragmentSearchTab extends Fragment implements View.OnClickListener 
                                 linearLayout_03.setVisibility(View.VISIBLE);
                                 listView_00.setVisibility(View.GONE);
                             } else {
-                                listView_00.setAdapter(new AdapterRentals(getActivity(), rentalListing));
+                                // Prevent null crashing due to quick tab switching
+                                if(getActivity() != null) {
+                                    listView_00.setAdapter(new AdapterRentals(getActivity(), rentalListing));
+                                }
                             }
                         }
                     },

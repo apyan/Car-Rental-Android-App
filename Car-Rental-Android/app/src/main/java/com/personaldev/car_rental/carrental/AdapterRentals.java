@@ -54,7 +54,7 @@ public class AdapterRentals extends BaseAdapter {
 
     // List Row Attributes
     public class RowAttributes {
-        TextView text_00, text_01, text_02, text_03;
+        TextView text_00, text_01, text_02, text_03, text_04;
     }
 
     @Override
@@ -69,6 +69,7 @@ public class AdapterRentals extends BaseAdapter {
         rowAttributes.text_01 = (TextView) rowView.findViewById(R.id.text_001);
         rowAttributes.text_02 = (TextView) rowView.findViewById(R.id.text_002);
         rowAttributes.text_03 = (TextView) rowView.findViewById(R.id.text_003);
+        rowAttributes.text_04 = (TextView) rowView.findViewById(R.id.text_004);
 
         // Display the cars available at the shop
         rowAttributes.text_00.setText(foundedRentals.get(position).carsListing.size() + "");
@@ -87,6 +88,11 @@ public class AdapterRentals extends BaseAdapter {
                 foundedRentals.get(position).addressRegion + ", " +
                 foundedRentals.get(position).addressCountry;
         rowAttributes.text_03.setText(placer_holder);
+
+        // Display the miles from the location
+        placer_holder = "(" + foundedRentals.get(position).distanceMiles + " " +
+                eContext.getString(R.string.row_01b) + ")";
+        rowAttributes.text_04.setText(placer_holder);
 
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override

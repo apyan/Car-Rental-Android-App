@@ -51,13 +51,17 @@
 
     <string name="row_00">00</string>
     <string name="row_01">Name (IN)</string>
+    <string name="row_01a">(mi.)</string>
+    <string name="row_01b">mi</string>
     <string name="row_02">(IN)</string>
     <string name="row_03">Address 1</string>
     <string name="row_04">Address 2</string>
 
     <!-- GeoMap Tab -->
-    <string name="map_tab_0">Search</string>
-    <string name="map_tab_1">Locate</string>
+    <string name="map_tab_0">Scan</string>
+    <string name="map_tab_1">Find</string>
+    <string name="map_tab_2">You are here!</string>
+    <string name="map_message_0">Searching for car rentals...\nPlease wait for a moment.</string>
 
     <!-- Options Tab -->
     <string name="options_tab_0">Location</string>
@@ -75,6 +79,10 @@
         <item>USD</item>
         <item>EUR</item>
     </string-array>
+
+    <string name="options_tab_3">Clear Data</string>
+    <string name="options_tab_3_info">This clears the users\'s recent search.</string>
+    <string name="options_tab_3_button">Clear</string>
 
     <!-- Credits -->
     <string name="credits_000">RentalDot</string>
