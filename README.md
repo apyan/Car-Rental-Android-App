@@ -1,2 +1,2 @@
-# Car-Rental-Android-App
-A mobile application that helps users locate car rental locations.
+# Car-Rental-Android-App:
+It's a mobile application similar to ZoomCar, which helps users to locate cars available for Rent in their Surroundings.
